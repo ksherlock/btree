@@ -1,0 +1,73 @@
+'
+' Christmas tree.
+' See https://github.com/anvaka/atree for explanation.
+'
+
+
+#define yScreenOffset 160
+#define xScreenOffset 140
+#define yScreenScale 230 ' 192
+#define xScreenScale 180
+
+	yCamera = 2
+	zCamera = -3
+
+	pi = 3.14159
+	'pi4 = pi/4
+
+	rate = 1 / (2 * pi)
+	factor = rate/3
+
+	'minx=100
+	'max=0
+	'miny=100
+	'maxy=0
+
+
+	home
+	hgr2
+
+	'theta = 0
+	angleOffset = 0
+	hcolor 1 ' green
+	for theta=0 to 14 step .1
+		gosub update
+	next
+
+
+
+	'theta = 0
+	angleOffset = pi
+	hcolor 5 ' orange
+	for theta=0 to 14 step .1
+		gosub update
+	next
+
+	'print "x=";minx;"..";maxx
+	'print "y=";miny;"..";maxy
+	end
+
+
+
+
+update:
+	ta = theta + angleOffset
+	tf = theta * factor
+	x = tf * cos(ta) 'theta + angleOffset
+	z = - tf * sin(ta) 'theta + angleOffset
+	y = rate * theta
+
+
+	'if x>maxx then maxx=x
+	'if y>maxy then maxy=y
+	'if x<minx then minx=x
+	'if y<miny then miny=y
+
+	z = z - zCamera
+	if z<2.9 then return
+
+	x = int(xScreenOffset + xScreenScale * (x / z))
+	y = int(yScreenOffset + yScreenScale * ((y - yCamera) / z))
+	hplot x,y
+	'print "x=";x;" y=";y;" z=";z
+	return
